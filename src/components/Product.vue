@@ -10,14 +10,32 @@
         </div>
       </div>
       <div class="row" v-if="!isShowingCart">
-        <div class="col-md-4" v-for="(product, index) in products" :key="index">
+        <div class="col-md-12">
+          <input type="text" class="form-control mb-3" v-model="searchbytitle">
+          <div v-if="searchbytitle.length > 0">
+            <div class="alert alert-primary" role="alert">
+              Searching...
+            </div>
+            <div v-if="filterItem.length > 0">
+              <div class="alert alert-success" role="alert">
+                {{ this.filterItem.length }} Found
+              </div>
+            </div>
+            <div v-else>
+              <div class="alert alert-danger" role="alert">
+                Not Found
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" v-for="(product, index) in filterItem" :key="index">
           <div class="card">
             <img class="card-img-top" src="http://via.placeholder.com/400x250/000/fff" alt="Card image cap">
             <div class="card-body">
               <h5 class="card-title">
                 {{ product.title }}
               </h5>
-              <p class="card-text">{{ product.description }}</p>
+              <p class="card-text">{{ product.description | limitContent }}</p>
               <div class="clearfix mb-3">
                 <span class="btn badge-primary float-left">
                  Price <span class="badge badge-light">{{ product.price | currency }}</span>
@@ -47,7 +65,7 @@
             <tr v-for="(item, index) in cart" :key="index">
               <td><button :class="{disabled : item.quantity > 0}" type="submit" class="btn btn-danger" @click="removeItem(item)">Remove</button> &nbsp; {{ item.product.title }}</td>
               <td>
-                <button type="submit" @click="itemDecerease(item)" :disabled="item.quantity == 0" class="btn btn-danger">-</button>
+                <button type="submit" @click="itemDecerease(item)" :disabled="item.quantity == 0" class="btn btn-danger">-</button> &nbsp;
                 {{ item.quantity }} &nbsp;
                 <button type="submit" @click="itemIncrease(item)" :disabled="item.product.inStock == 0" class="btn btn-success">+</button>
               </td>
@@ -132,7 +150,8 @@ export default {
         }
       ],
       cart: [],
-      isShowingCart: false
+      isShowingCart: false,
+      searchbytitle: ''
     }
   },
   filters: {
@@ -143,6 +162,9 @@ export default {
         minimumFractionDigits: 0
       })
       return formatter.format(value)
+    },
+    limitContent: function (value) {
+      return value.slice(0, 100) + '...'
     }
   },
   methods: {
@@ -202,6 +224,11 @@ export default {
     },
     grandTotal: function () {
       return (this.cartTotal + this.taxAmaunt)
+    },
+    filterItem: function () {
+      return this.products.filter((product) => {
+        return product.title.toLowerCase().match(this.searchbytitle.toLowerCase())
+      })
     }
   }
 }
