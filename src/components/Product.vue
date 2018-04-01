@@ -33,6 +33,7 @@
             <img class="card-img-top" src="http://via.placeholder.com/400x250/000/fff" alt="Card image cap">
             <div class="card-body">
               <span class="badge badge-pill badge-primary">{{ product.category }}</span>
+              <strong class="small d-block my-2">Published by : {{ product.published | format }}</strong>
               <h5 class="card-title">
                 {{ product.title }}
               </h5>
@@ -102,6 +103,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'Product',
   data () {
@@ -113,7 +116,8 @@ export default {
           description: 'A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.',
           price: 2999,
           inStock: 9,
-          category: 'Mobile'
+          category: 'Mobile',
+          published: new Date()
         },
         {
           id: 2,
@@ -121,7 +125,8 @@ export default {
           description: 'One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.',
           price: 599,
           inStock: 0,
-          category: 'Computer'
+          category: 'Computer',
+          published: new Date()
         },
         {
           id: 3,
@@ -129,7 +134,8 @@ export default {
           description: 'But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete .',
           price: 299,
           inStock: 20,
-          category: 'Monitor'
+          category: 'Monitor',
+          published: new Date()
         },
         {
           id: 4,
@@ -137,7 +143,8 @@ export default {
           description: 'The quick, brown fox jumps over a lazy dog. DJs flock by when MTV ax quiz prog. Junk MTV quiz graced by fox whelps.',
           price: 99,
           inStock: 100,
-          category: 'Mobile'
+          category: 'Mobile',
+          published: new Date()
         },
         {
           id: 5,
@@ -145,7 +152,8 @@ export default {
           description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. ',
           price: 199,
           inStock: 30,
-          category: 'Tab'
+          category: 'Tab',
+          published: new Date()
         },
         {
           id: 6,
@@ -153,7 +161,8 @@ export default {
           description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem.',
           price: 29,
           inStock: 40,
-          category: 'Mobile'
+          category: 'Mobile',
+          published: new Date()
         }
       ],
       cart: [],
@@ -172,6 +181,9 @@ export default {
     },
     limitContent: function (value) {
       return value.slice(0, 100) + '...'
+    },
+    format (value) {
+      return moment(String(value)).format('MM/DD/YYYY hh:mm')
     }
   },
   methods: {
