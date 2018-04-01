@@ -33,7 +33,7 @@
             <img class="card-img-top" src="http://via.placeholder.com/400x250/000/fff" alt="Card image cap">
             <div class="card-body">
               <span class="badge badge-pill badge-primary">{{ product.category }}</span>
-              <strong class="small d-block my-2">Published by : {{ product.published | format }}</strong>
+              <strong class="d-block my-2 text-info">Published by : {{ product.published | format }}</strong>
               <h5 class="card-title">
                 {{ product.title }}
               </h5>
